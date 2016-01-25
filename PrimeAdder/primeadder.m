@@ -6,26 +6,26 @@
 % In order to do this, I decided to make use of a wonderful algorithm called Sieve of Eratosthenes to find all primes below an integer n and then subsequently sum them up. 
 % Algorithm credits - Eratosthenes 276 B.C - 195/194 B.C
 
-function [sumPrimes] = sumprime(n)
+N = 30;
 
-% Declare an array which holds all integers from 1 to n.
-	array = 1:n;
-	% Iterate through all elements of array starting from index 2 (since 1 is not a prime number)
-	for i = 2:numel(array)
-		% If element at index i != -1, then iterate through every multiple of i and set it equal to -1.
-		if array[i] != -1
-			j = i;
-		        while(i*j <= numel(array)
-				array[i*j] = -1;
-				j++;	%increment j
-	% By the end of the above loops, the array should contain all prime numbers.
+function [primes] = sumprime(N)
 
-	% Iterate through for loop again and if an element is != -1, add it to sum.
-       sumPrimes = 0;	
-       for k = 2:numel(array)
-		if array[k] != -1
-			sumPrimes += array[k];
+% Declare an array which holds all integers from 2 to n.
+	primes = 2:N;
+	p = 2;	
 	
-end	
+	% Iterate through all elements of array starting from index 2 (since 1 is not a prime number) and set all multiples of given index to 0.
 
-v = sumprime(10)
+	while(p <= N)
+		for i = 2*p:p:N
+			primes(i - 1) = 0;
+		end;
+		p = p + 1;
+	end
+	% Filter out all numbers that are not 0 i.e get only the prime numbers and store them in array 'primes'.
+	primes = primes(primes > 0);
+	sumPrimes = sum(primes);
+	print(sumPrimes)
+end
+
+
