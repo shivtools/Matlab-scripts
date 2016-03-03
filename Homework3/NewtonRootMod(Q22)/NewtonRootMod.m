@@ -25,11 +25,10 @@ if i == imax
     Xs = ('No answer');    
 end
 
-function y = FunExample2(x)
-y = 8 - 4.5*(x-sin(x));
+FunExample2 = @(x)8 - 4.5*(x-sin(x));
 
-function y = FunDerExample2(x)
-y = -4.5 + 4.5*cos(x);
+FunDerExample2 = @(x) -4.5 + 4.5*cos(x);
 
-format long
-[xSolution, f(xSolution), numIterations] = NewtonRootMod(@FunExample2, @FunDerExample2, 2, 0.0001, 10)
+format long;
+
+%[xSolution, solution, numIterations] = NewtonRootMod(FunExample2, FunDerExample2, 2, 0.0001, 10)
