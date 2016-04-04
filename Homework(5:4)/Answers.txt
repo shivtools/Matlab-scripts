@@ -1,0 +1,97 @@
+Shiv Toolsidass, Homework for CMSC 328, due 5/4/16
+
+1) Problem 8.17
+
+Code:
+
+*****************************************************************************************************
+function [yd] = FirstDeriv(x,y)
+% Author: Shiv Toolsidass
+% Input: accepts vectors x (x-coordinates) and y (y-coordinates)
+% Output: yd  (vector with values of derivative at each point)
+
+h = x(2)-x(1); % calculate h based on difference between x2 and x1
+
+yd(1) = (-3*y(1) + 4*y(2) - y(3))/2*h; %Calculate first coordinate of yd based on three point forward difference
+
+yd_length = length(x); %get length of yd vector (for for loop)
+
+%iterate from index 2 till yd_n-1 and calculate derivative using two point
+%central difference formula
+for i = 2: yd_length-1
+    yd(i) = (y(i+1)-y(i-1))/2;
+end
+
+%calculate last derivative using three point backward difference formula
+yd(yd_length) = (y(yd_length-2)-4*y(yd_length-1)+3*(yd_length))/(2*h);
+
+end
+
+***************************************************************************************************
+
+Output:
+
+
+>> x = [1.1 1.2 1.3 1.4 1.5];
+>> y = [0.6133 0.7822 0.9716 1.1814 1.4117];
+
+>> [yd] = FirstDeriv(x,y)
+
+yd =
+
+    0.0159    0.1792    0.1996    0.2200   56.2300
+
+------------------------------------------------------------------------------------------------
+
+2) Problem 8.29a (did this by mistake!)
+
+ Code:
+
+***************************************************************************************************
+
+function [yd] = FirstDerivUnique(x,y)
+% Author: Shiv Toolsidass
+% Differentiation based on second order lagrange polynomials
+% Input: accepts vectors x (x-coordinates) and y (y-coordinates)
+% Output: yd  (vector with values of derivative at each point)
+
+yd(1) = (((2*x(1)-x(2)-x(3))/(x(1)-x(2))*(x(1)-x(3)))*y(1)) + ((x(1)-x(3))/((x(2)-x(1))*(x(2)-x(3))))*y(2); %Calculate first coordinate of yd based on 8.35
+
+yd_n = length(x); %get length of yd vector (for for loop)
+
+%iterate from index 2 till yd_n-1 and calculate derivative using Formula
+%8.36
+for i = 2: yd_n-1
+    yd(i) = (((x(i)-x(i+1))/(x(i-1)-x(i)))*y(i-1)) + (((2*x(i)-x(i-1)-x(i+1))/(x(i)-x(i-1))*(x(i)-x(i+1)))*y(i));
+end
+
+%calculate last derivative using Formula 8.37
+yd(yd_n) = (((x(yd_n)-x(yd_n-1))/((x(yd_n-2)-x(yd_n-1))*(x(yd_n-2)-x(yd_n))))*y(yd_n-2)) + (((x(yd_n)-x(yd_n-2))/((x(yd_n-1)-x(yd_n-2))*(x(yd_n-1)-x(yd_n))))*y(yd_n-1));
+end
+
+***************************************************************************************************
+
+Output:
+
+>> lambda = [0.2 0.25 0.3 0.36 0.45 0.6 1.0 1.6 2.2 3.37];
+>> n = [1.551 1.507 1.488 1.475 1.466 1.458 1.450 1.443 1.435 1.410];
+>> yd = FirstDerivUnique(lambda,n)
+
+yd =
+
+   59.8147    1.5510    1.8263    2.2984    2.6049    4.8813    2.6220    1.4500    4.4089   -2.0284
+
+------------------------------------------------------------------------------------------------
+
+Problem 8.29b
+
+>> lambda = [0.2 0.25 0.3 0.36 0.45 0.6 1.0 1.6 2.2 3.37];
+>> n = [1.551 1.507 1.488 1.475 1.466 1.458 1.450 1.443 1.435 1.410];
+>> yd = diff(n)./diff(lambda)
+
+yd =
+
+   -0.8800   -0.3800   -0.2167   -0.1000   -0.0533   -0.0200   -0.0117   -0.0133   -0.0214
+
+
+

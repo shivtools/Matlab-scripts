@@ -1,0 +1,7 @@
+function I = FirstDerivUnique(x,y)
+% Author: Shiv Toolsidass
+numIntervals = length(x)-1;
+if(mod(
+    
+end
+end
