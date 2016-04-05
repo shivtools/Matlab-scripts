@@ -19,7 +19,7 @@ yd_length = length(x); %get length of yd vector (for for loop)
 %iterate from index 2 till yd_n-1 and calculate derivative using two point
 %central difference formula
 for i = 2: yd_length-1
-    yd(i) = (y(i+1)-y(i-1))/2;
+    yd(i) = (y(i+1)-y(i-1))/2*h;
 end
 
 %calculate last derivative using three point backward difference formula
@@ -39,7 +39,7 @@ Output:
 
 yd =
 
-    0.0159    0.1792    0.1996    0.2200   56.2300
+    0.0159    0.0179    0.0200    0.0220   0.0241
 
 ------------------------------------------------------------------------------------------------
 
@@ -93,5 +93,97 @@ yd =
 
    -0.8800   -0.3800   -0.2167   -0.1000   -0.0533   -0.0200   -0.0117   -0.0133   -0.0214
 
+
+------------------------------------------------------------------------------------------------
+
+3) Problem 9.20a
+
+
+*************************************************************************************************** 
+
+Code:
+
+function I = SimpsonPoints(x,y)
+
+	n = length(x)
+	num_intervals = n-1;
+	h = x(2)-x(1);
+
+	% Do integration by Simpson's 3/8 method if num_intervals%3 = 0
+	if mod(num_intervals, 3) == 0
+		for i = 1:n
+			if i == 1 | i == n
+				I = I + y(i);
+			else if mod(i,3) == 1
+					I = I + 2*y(i);
+			else
+				I = I + 3*y(i);
+			end
+		end
+		I = I*3*h/8;
+
+	%If number of intervals in data points is one more than a number divisible by 3, 
+	%integration in the first interval is done by the trapezoidal method and the 
+	%rest of the intervals are done with composite Simpson's 3/8 method.
+
+	else if mod(num_intervals, 3) == 1
+		I_trapezoidal = (y(1)+y(2))/2;
+		for	i = 2:n
+			if ((i == 2) | (i == n))
+				I = I + y(i);
+			else if mod(i,3) == 2
+				I = I + 2*y(i);
+			else
+				I = I + 3*y(i);
+			end
+		end
+		I = I*3*h/8 + I_trapezoidal;
+
+	%else the integration over the first two intervals is done with Simpson's 1/3 method
+	%and integration over the rest of the intervals is done by composite Simpson's 3/8 method
+	else
+		I_simpson = ((x(2)-x(1))*(y(1)+4*y(2)+y(3)))/3;
+		for i = 3:n
+			if (i == 3) | (i == n)
+				I = I + y(i);
+			else if mod(i,3) == 0
+				I = I + 2*y(i);
+			else 
+				I = I + 3*y(i);
+			end
+		end
+		I = (I*3*h/8) + I_simpson;
+
+	end
+
+end
+
+
+***************************************************************************************************
+
+Output: 
+
+3.1163
+
+------------------------------------------------------------------------------------------------
+
+
+4) Problem 9.32c
+
+Code: 
+
+r = [0.0 0.25 0.50 0.75 1.00 1.25 1.5 1.75 2.0];
+v = [38.0 37.6 36.2 33.6 29.7 24.5 17.8 9.6 0];
+ans = trapz(r,v.*r*2*pi)
+
+
+***************************************************************************************************
+
+Output: 
+
+ans = 245.8689
+
+
+------------------------------------------------------------------------------------------------
 
 
